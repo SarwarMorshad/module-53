@@ -1,8 +1,9 @@
-import React, { use } from "react";
+import React, { use, useState } from "react";
 
 const Users = ({ usersPromise }) => {
-  const users = use(usersPromise);
-  console.log(users);
+  const initialUsers = use(usersPromise);
+  console.log(initialUsers);
+  const [users, setUsers] = useState(initialUsers);
 
   const handleAddUser = (e) => {
     e.preventDefault();
@@ -22,6 +23,9 @@ const Users = ({ usersPromise }) => {
       .then((res) => res.json())
       .then((data) => {
         console.log("After Post", data);
+        const updatedUsers = [...users, data];
+        setUsers(updatedUsers);
+        e.target.reset();
       });
   };
 
@@ -39,8 +43,9 @@ const Users = ({ usersPromise }) => {
       </div>
       <div>
         {users.map((user) => (
-          <div key={user.id}>
-            <h2>{user.name}</h2>
+          <div key={user.id} style={{ border: "1px solid gray", margin: "10px", padding: "10px" }}>
+            <h2>Name: {user.name}</h2>
+            <h2>Email: {user.email}</h2>
           </div>
         ))}
       </div>
